@@ -24,9 +24,6 @@ class App extends Component {
   render() {
     let chars = null
 
-    console.log(this.state.text)
-    console.log(this.state.text.length)
-
     if (this.state.text.length > 0) {
       let splitText = this.state.text.split('')
       chars = (
