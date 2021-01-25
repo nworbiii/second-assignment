@@ -1,51 +1,45 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Char from './Char/Char'
 import Validation from './Validation/Validation'
 import './App.css'
 
-class App extends Component {
-  state = {
-    text: ""
+function App() {
+  const [userInput, setUserInput] = useState("")
+
+  const textChangedHandler = event => {
+    setUserInput(event.target.value)
   }
 
-  textChangedHandler = event => {
-    const inputText = event.target.value
-    this.setState({ text: inputText })
-  }
-
-  deleteCharHandler = textIndex => {
-    const text = this.state.text
-    let splitText = this.state.text.split("")
-    splitText = [...this.state.text]; // spread operator
+  const deleteCharHandler = textIndex => {
+    let splitText = userInput.split("")
+    splitText = [...userInput]; // spread operator
     splitText.splice(textIndex, 1);
-    this.setState({ text: splitText.join('') })
+    setUserInput(splitText.join(""))
   }
 
-  render() {
-    let chars = null
+  let chars = null
 
-    if (this.state.text.length > 0) {
-      let splitText = this.state.text.split('')
-      chars = (
-        <div>
-          {splitText.map((char, index) => {
-            return <Char 
-              text={char}
-              click={()=> this.deleteCharHandler(index)} />
-          })}
-        </div>
-      )
-    }
-    return (
-      <div className="App">
-        <p>Hello world</p>
-        <input type='text' value={this.state.text} onChange={this.textChangedHandler}></input>
-        <p>Length of input text = {this.state.text.length}</p>
-        <Validation textLength={this.state.text.length} />
-        {chars}
+  if (userInput.length > 0) {
+    chars = (
+      <div>
+        {userInput.split("").map((char, index) => {
+          return <Char
+            text={char}
+            click={() => deleteCharHandler(index)} />
+        })}
       </div>
-    );
+    )
   }
+
+  return (
+    <div className="App">
+      <p>Hello world</p>
+      <input type='text' value={userInput} onChange={textChangedHandler}></input>
+      <p>Length of input text = {userInput.length}</p>
+      <Validation textLength={userInput.length} />
+      {chars}
+    </div>
+  );
 }
 
 export default App;
